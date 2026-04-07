@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 import { TextField } from "./TextField";
@@ -8,9 +7,9 @@ export const FirstStep = ({ handleNextStep, form, setForm, errors, setErrors }) 
     if (value === "") return "First name cannot be empty...";
     if (!/^[A-Za-z-]+$/.test(value)) return "First name cannot contain special characters or numbers.";
   };
-  const isLastnameValid = () => {
-    if (form.lastname === "") return "Last name cannot be empty...";
-    if (!/^[A-Za-z-]+$/.test(form.lastname)) return "Last name cannot contain special characters or numbers.";
+  const isLastnameValid = (value) => {
+    if (value === "") return "Last name cannot be empty...";
+    if (!/^[A-Za-z-]+$/.test(value)) return "Last name cannot contain special characters or numbers.";
   };
   const isUsernameValid = () => {
     if (form.username === "") return "Username name cannot be empty...";
@@ -30,8 +29,8 @@ export const FirstStep = ({ handleNextStep, form, setForm, errors, setErrors }) 
         <TextField
           value={form.firstname}
           onChange={(e) => {
-            setErrors({ ...errors, firstname: isFirstNameValid(e.target.value) });
             setForm({ ...form, firstname: e.target.value });
+            setErrors({ ...errors, firstname: isFirstNameValid(e.target.value) });
           }}
           error={errors.firstname}
           required={true}
@@ -42,8 +41,9 @@ export const FirstStep = ({ handleNextStep, form, setForm, errors, setErrors }) 
           value={form.lastname}
           onChange={(e) => {
             setForm({ ...form, lastname: e.target.value });
+            setErrors({ ...errors, lastname: isLastnameValid(e.target.value) });
           }}
-          error={isLastnameValid()}
+          error={errors.lastname}
           required={true}
           label="Last name"
           placeholder="Doe..."
